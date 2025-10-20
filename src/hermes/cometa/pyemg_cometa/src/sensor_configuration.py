@@ -25,28 +25,36 @@
 #
 # ############
 
-from hermes.base.stream import Stream
+import clr
+
+from .constants import AccelerometerFullScaleEnum, GyroscopeFullScaleEnum, SensorTypeEnum
+
+clr.AddReference("../lib/Waveplus.DaqSys") # type: ignore
+clr.AddReference("../lib/Waveplus.DaqSysInterface") # type: ignore
+clr.AddReference("../lib/CyUSB") # type: ignore
+
+from Waveplus.DaqSys import * # type: ignore
+from Waveplus.DaqSysInterface import * # type: ignore
+from Waveplus.DaqSys.Definitions import * # type: ignore
+from Waveplus.DaqSys.Exceptions import * # type: ignore
+from CyUSB import * # type: ignore
 
 
-class TemplateStream(Stream):
-  """A Stream structure to extend with user-specific modality data.
-  """
-  def __init__(self, 
-               sampling_rate_hz: int = 1,
-               **_) -> None:
-    super().__init__()
+class CometaSensorConfiguration(SensorConfiguration): # type: ignore
+  def get_sensor_type(self) -> SensorTypeEnum:
+    return self.get_SensorType()
 
-    # TODO: match to device key used when publishing data.
-    self._device_name = 'sensor-emulator'
+  def set_sensor_type(self, sensor_type: SensorTypeEnum) -> None:
+    self.set_SensorType(sensor_type)
 
-    # TODO: add desired substreams.
-    self.add_stream(device_name=self._device_name,
-                    stream_name='toa',
-                    data_type='float32',
-                    sample_size=[1],
-                    sampling_rate_hz=sampling_rate_hz,
-                    is_measure_rate_hz=True)
+  def get_accelerometer_full_scale(self) -> AccelerometerFullScaleEnum:
+    return self.get_AccelerometerFullScale()
 
+  def set_accelerometer_full_scale(self, full_scale: AccelerometerFullScaleEnum) -> None:
+    self.set_AccelerometerFullScale(full_scale)
 
-  def get_fps(self) -> dict[str, float | None]:
-    return {self._device_name: super()._get_fps(self._device_name, 'toa')}
+  def get_gyroscope_full_scale(self) -> GyroscopeFullScaleEnum:
+    return self.get_GyroscopeFullScale()
+
+  def set_gyroscope_full_scale(self, full_scale: GyroscopeFullScaleEnum) -> None:
+    self.set_GyroscopeFullScale(full_scale)

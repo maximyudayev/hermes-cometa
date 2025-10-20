@@ -25,53 +25,36 @@
 #
 # ############
 
+import clr
 
-host_ip : "127.0.0.1"
-is_master_broker: True
+clr.AddReference("../lib/Waveplus.DaqSys") # type: ignore
+clr.AddReference("../lib/Waveplus.DaqSysInterface") # type: ignore
+clr.AddReference("../lib/CyUSB") # type: ignore
 
-remote_subscriber_ips: []
-remote_publisher_ips: []
+from Waveplus.DaqSys import * # type: ignore
+from Waveplus.DaqSysInterface import * # type: ignore
+from Waveplus.DaqSys.Definitions import * # type: ignore
+from Waveplus.DaqSys.Exceptions import * # type: ignore
+from CyUSB import * # type: ignore
 
-is_remote_kill: False
-remote_kill_ip: null
 
-
-logging_spec:
-  stream_period_s     : 30
+class CometaVersion(Version): # type: ignore
+  def get_major(self) -> int:
+    return self.get_Major()
   
-  stream_hdf5         : True
-  stream_csv          : False
-  stream_video        : False
-  stream_audio        : False
-
-  dump_csv            : False
-  dump_hdf5           : False
-  dump_video          : False
-  dump_audio          : False
-
-  video_codec_config_filepath : "example/video_codec.yml" 
-  video_codec_num_cpu : 1
-
-  audio_codec_config_filepath : "example/audio_codec.yml" 
-  audio_codec_num_cpu : 1
+  def get_minor(self) -> int:
+    return self.get_Minor()
 
 
-producer_specs:
-  - package: "template"
-    class: "TemplateProducer"
-    settings:
-      sampling_rate_hz: 1
-
-
-consumer_specs:
-  - package: "template"
-    class: "TemplateConsumer"
-    settings:
-      stream_in_specs:
-        - package: "template"
-          class: "TemplateProducer"
-          settings:
-            sampling_rate_hz: 1
-
-
-pipeline_specs: []
+class CometaExtVersion(ExtVersion): # type: ignore
+  def get_major(self) -> int:
+    return self.get_Major()
+    
+  def get_minor(self) -> int:
+    return self.get_Minor()
+    
+  def get_build(self) -> int:
+    return self.get_Build()
+    
+  def get_revision(self) -> int:
+    return self.get_Revision()

@@ -3,39 +3,43 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pysio-hermes-cometa"
+name = "pysio-pyemg-cometa"
 version = "0.0.1"
 requires-python = ">=3.7"
 authors = [
   { name="Maxim Yudayev", email="maxim.yudayev@gmail.com" },
   { name="e-Media Research Lab @ KU Leuven" },
 ]
-description = "A Cometa sEMG support module for HERMES"
-keywords = ["embedded ai", "wearables", "sensors", "emg", "cometa", "streaming", "realtime processing", "physiology"]
+description = "A pythonic wrapper library for Cometa sEMG Waveplus and WaveX devices"
+keywords = ["wearables", "sensors", "surface electromyography", "cometa", "streaming", "sensing", "physiology"]
 readme = { file = "README.md", content-type = "text/markdown" }
 license = "MIT"
 license-files = ["LICENSE"]
 classifiers = [
   "Programming Language :: Python :: 3",
-  "Operating System :: OS Independent",
+  "Operating System :: Microsoft :: Windows",
   "Development Status :: 4 - Beta",
   "Intended Audience :: Healthcare Industry",
   "Intended Audience :: Education",
   "Intended Audience :: Developers",
   "Intended Audience :: Science/Research",
   "Topic :: Scientific/Engineering",
-  "Topic :: Scientific/Engineering :: Artificial Intelligence",
   "Topic :: Scientific/Engineering :: Medical Science Apps.",
-  "Topic :: System :: Distributed Computing"
 ]
 dependencies = [
-  "pysio-hermes",
-  "pysio-pyemg-cometa",
+  "pythonnet"
 ]
 
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+pyemg_cometa = ["*.dll"]
+
+[tool.setuptools]
+platforms = ["win32", "win64", "cygwin", "msys"]
+
 [project.urls]
-Homepage = "https://maximyudayev.github.io/hermes"
-Documentation = "https://maximyudayev.github.io/hermes"
-Repository = "https://github.com/maximyudayev/hermes-cometa.git"
-Issues = "https://github.com/maximyudayev/hermes/issues"
-Changelog = "https://github.com/maximyudayev/hermes-cometa/blob/main/CHANGELOG.md"
+Repository = "https://github.com/maximyudayev/pyemg-cometa.git"
+Issues = "https://github.com/maximyudayev/pyemg-cometa/issues"
+Changelog = "https://github.com/maximyudayev/pyemg-cometa/blob/main/CHANGELOG.md"

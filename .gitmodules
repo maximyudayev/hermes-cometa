@@ -1,0 +1,3 @@
+[submodule "pyemg-cometa"]
+	path = src/hermes/cometa/pyemg_cometa
+	url = https://github.com/maximyudayev/pyemg-cometa.git
