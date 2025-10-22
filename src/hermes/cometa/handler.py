@@ -29,24 +29,26 @@ import queue
 import time
 from typing import Any, Callable
 import numpy as np
-import clr
 
-from .pyemg_cometa.src.constants import (
+from pyemg_cometa.constants import (
   AccelerometerFullScaleEnum, GyroscopeFullScaleEnum, ImuAcqTypeEnum,
   SamplingRateEnum, DataAvailableEventPeriodEnum,
   DeviceStateEnum,
   SensorCheckReportEnum, SensorTypeEnum
 )
-from .pyemg_cometa.src.capture_configuration import CometaCaptureConfiguration
-from .pyemg_cometa.src.daq_system import CometaDaqSystem
-from .pyemg_cometa.src.event_args import CometaDataAvailableEventArgs, CometaDeviceStateChangedEventArgs
-from .pyemg_cometa.src.sensor_configuration import CometaSensorConfiguration
+from pyemg_cometa.capture_configuration import CometaCaptureConfiguration
+from pyemg_cometa.daq_system import CometaDaqSystem
+from pyemg_cometa.event_args import CometaDataAvailableEventArgs, CometaDeviceStateChangedEventArgs
+from pyemg_cometa.sensor_configuration import CometaSensorConfiguration
 
 from hermes.utils.time_utils import get_time
 
-clr.AddReference("Waveplus.DaqSys") # type: ignore
-clr.AddReference("Waveplus.DaqSysInterface") # type: ignore
-clr.AddReference("CyUSB") # type: ignore
+import os
+dir_path = os.path.dirname(__file__)
+
+clr.AddReference(os.path.join(dir_path, 'lib', 'Waveplus.DaqSys')) # type: ignore
+clr.AddReference(os.path.join(dir_path, 'lib', 'Waveplus.DaqSysInterface')) # type: ignore
+clr.AddReference(os.path.join(dir_path, 'lib', 'CyUSB')) # type: ignore
 
 from Waveplus.DaqSys import * # type: ignore
 from Waveplus.DaqSysInterface import * # type: ignore

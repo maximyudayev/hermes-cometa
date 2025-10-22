@@ -8,5 +8,5 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## HERMES Cometa
 
-### 0.0.1 <small>Month Day, Year</small>
+### 0.0.1 <small>October 22, 2025</small>
 - Initial public release of an optional Cometa sEMG HERMES package.
