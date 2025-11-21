@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pysio-hermes-cometa"
-version = "0.0.1"
+dynamic = ["version"]
 requires-python = ">=3.7"
 authors = [
   { name="Maxim Yudayev", email="maxim.yudayev@gmail.com" },
@@ -41,6 +41,9 @@ cometa = ["lib/*.dll"]
 
 [tool.setuptools]
 platforms = ["win32", "win-amd64"]
+
+[tool.setuptools.dynamic]
+version = {attr = "hermes.cometa.__version__.__version__"}
 
 [project.urls]
 Homepage = "https://maximyudayev.github.io/hermes"
