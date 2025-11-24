@@ -1,6 +1,6 @@
 ############
 #
-# Copyright (c) 2024 Maxim Yudayev and KU Leuven eMedia Lab
+# Copyright (c) 2024-2025 Maxim Yudayev and KU Leuven eMedia Lab
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -31,60 +31,78 @@ from hermes.base.stream import Stream
 
 
 class CometaStream(Stream):
-  """A structure to store Cometa sEMG data.
-  """
-  def __init__(self, 
-               device_mapping: dict[str, str],
-               sampling_rate_hz: int = 2000,
-               timesteps_before_solidified: int = 0,
-               update_interval_ms: int = 100,
-               **_) -> None:
-    super().__init__()
-    self._device_mapping = device_mapping
-    self._sampling_rate_hz = sampling_rate_hz
-    self._update_interval_ms = update_interval_ms
-    self._num_sensors = len(device_mapping)
-    self._timesteps_before_solidified = timesteps_before_solidified
+    """A structure to store Cometa sEMG data."""
 
-    self._define_data_notes()
+    def __init__(
+        self,
+        device_mapping: dict[str, str],
+        sampling_rate_hz: int = 2000,
+        timesteps_before_solidified: int = 0,
+        update_interval_ms: int = 100,
+        **_
+    ) -> None:
+        super().__init__()
+        self._device_mapping = device_mapping
+        self._sampling_rate_hz = sampling_rate_hz
+        self._update_interval_ms = update_interval_ms
+        self._num_sensors = len(device_mapping)
+        self._timesteps_before_solidified = timesteps_before_solidified
 
-    self.add_stream(device_name='cometa-emg',
-                    stream_name='emg',
-                    data_type='float32',
-                    sample_size=(self._num_sensors,),
-                    sampling_rate_hz=self._sampling_rate_hz,
-                    is_measure_rate_hz=True,
-                    data_notes=self._data_notes['cometa-emg']['emg'])
-    self.add_stream(device_name='cometa-emg',
-                    stream_name='num_samples',
-                    data_type='int32',
-                    sample_size=(1,),
-                    data_notes=self._data_notes['cometa-emg']['num_samples'])
-    self.add_stream(device_name='cometa-emg',
-                    stream_name='toa_s',
-                    data_type='float64',
-                    sample_size=(1,),
-                    sampling_rate_hz=self._sampling_rate_hz,
-                    data_notes=self._data_notes['cometa-emg']['toa_s'])
+        self._define_data_notes()
 
+        self.add_stream(
+            device_name="cometa-emg",
+            stream_name="emg",
+            data_type="float32",
+            sample_size=(self._num_sensors,),
+            sampling_rate_hz=self._sampling_rate_hz,
+            is_measure_rate_hz=True,
+            data_notes=self._data_notes["cometa-emg"]["emg"],
+        )
+        self.add_stream(
+            device_name="cometa-emg",
+            stream_name="num_samples",
+            data_type="int32",
+            sample_size=(1,),
+            data_notes=self._data_notes["cometa-emg"]["num_samples"],
+        )
+        self.add_stream(
+            device_name="cometa-emg",
+            stream_name="toa_s",
+            data_type="float64",
+            sample_size=(1,),
+            sampling_rate_hz=self._sampling_rate_hz,
+            data_notes=self._data_notes["cometa-emg"]["toa_s"],
+        )
 
-  def get_fps(self) -> dict[str, float | None]:
-    return {'cometa-emg': super()._get_fps('cometa-emg', 'emg')}
+    def get_fps(self) -> dict[str, float | None]:
+        return {"cometa-emg": super()._get_fps("cometa-emg", "emg")}
 
+    def _define_data_notes(self) -> None:
+        self._data_notes = {}
+        self._data_notes.setdefault("cometa-emg", {})
 
-  def _define_data_notes(self) -> None:
-    self._data_notes = {}
-    self._data_notes.setdefault('cometa-emg', {})
-
-    self._data_notes['cometa-emg']['emg'] = OrderedDict([
-      ('Description', 'Electric potential at the placement location'),
-      ('Units', 'uV'),
-      (Stream.metadata_data_headings_key, list(self._device_mapping.keys())),
-    ])
-    self._data_notes['cometa-emg']['num_samples'] = OrderedDict([
-      ('Description', 'Number of burst samples in the packet received at the current strobe.'),
-    ])
-    self._data_notes['cometa-emg']['toa_s'] = OrderedDict([
-      ('Description', 'Time of arrival of the burst samples packet w.r.t. system clock.'),
-      ('Units', 'seconds'),
-    ])
+        self._data_notes["cometa-emg"]["emg"] = OrderedDict(
+            [
+                ("Description", "Electric potential at the placement location"),
+                ("Units", "uV"),
+                (Stream.metadata_data_headings_key, list(self._device_mapping.keys())),
+            ]
+        )
+        self._data_notes["cometa-emg"]["num_samples"] = OrderedDict(
+            [
+                (
+                    "Description",
+                    "Number of burst samples in the packet received at the current strobe.",
+                ),
+            ]
+        )
+        self._data_notes["cometa-emg"]["toa_s"] = OrderedDict(
+            [
+                (
+                    "Description",
+                    "Time of arrival of the burst samples packet w.r.t. system clock.",
+                ),
+                ("Units", "seconds"),
+            ]
+        )

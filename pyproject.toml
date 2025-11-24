@@ -31,6 +31,7 @@ classifiers = [
 dependencies = [
   "pysio-hermes",
   "pysio-pyemg-cometa",
+  "pythonnet"
 ]
 
 [tool.setuptools.packages.find]
