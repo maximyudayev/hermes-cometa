@@ -31,14 +31,7 @@ classifiers = [
 dependencies = [
   "pysio-hermes",
   "pysio-pyemg-cometa",
-  "pythonnet"
 ]
-
-[tool.setuptools.packages.find]
-where = ["src"]
-
-[tool.setuptools.package-data]
-cometa = ["lib/*.dll"]
 
 [tool.setuptools]
 platforms = ["win32", "win-amd64"]

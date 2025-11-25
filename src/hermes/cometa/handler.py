@@ -50,20 +50,6 @@ from pyemg_cometa.sensor_configuration import CometaSensorConfiguration
 
 from hermes.utils.time_utils import get_time
 
-import os
-
-dir_path = os.path.dirname(__file__)
-
-clr.AddReference(os.path.join(dir_path, "lib", "Waveplus.DaqSys"))  # type: ignore
-clr.AddReference(os.path.join(dir_path, "lib", "Waveplus.DaqSysInterface"))  # type: ignore
-clr.AddReference(os.path.join(dir_path, "lib", "CyUSB"))  # type: ignore
-
-from Waveplus.DaqSys import *  # type: ignore
-from Waveplus.DaqSysInterface import *  # type: ignore
-from Waveplus.DaqSys.Definitions import *  # type: ignore
-from Waveplus.DaqSys.Exceptions import *  # type: ignore
-from CyUSB import *  # type: ignore
-
 
 class CometaFacade:
     """Cometa backend handling interface.
@@ -79,7 +65,7 @@ class CometaFacade:
         self._is_check_impedance = is_check_impedance
         self._is_more = True
         self._packet_queue = queue.Queue()
-        self._on_data_available_fn: Callable[[Any, DeviceStateChangedEventArgs], None] = self._idle_on_data_callback  # type: ignore
+        self._on_data_available_fn: Callable[[Any, CometaDeviceStateChangedEventArgs], None] = self._idle_on_data_callback  # type: ignore
 
     def initialize(self) -> bool:
         self._daq = CometaDaqSystem()
@@ -161,7 +147,7 @@ class CometaFacade:
                 print("DAQ in unknown state %s." % new_state, flush=True)
             time.sleep(1)
 
-        def on_data_available(source, args: DataAvailableEventArgs) -> None:  # type: ignore
+        def on_data_available(source, args: CometaDataAvailableEventArgs) -> None:  # type: ignore
             self._on_data_available_fn(source, args)
 
         self._daq.add_on_state_changed_handler(on_state_changed)
@@ -175,10 +161,10 @@ class CometaFacade:
     def keep_data(self) -> None:
         self._on_data_available_fn = self._active_on_data_callback
 
-    def _idle_on_data_callback(self, source, args: DataAvailableEventArgs) -> None:  # type: ignore
+    def _idle_on_data_callback(self, source, args: CometaDataAvailableEventArgs) -> None:  # type: ignore
         return
 
-    def _active_on_data_callback(self, source, args: DataAvailableEventArgs) -> None:  # type: ignore
+    def _active_on_data_callback(self, source, args: CometaDataAvailableEventArgs) -> None:  # type: ignore
         toa_s = get_time()
         # NOTE: SDK duplicates Acc measurements 14x times to match the vector length of the 2kHz EMG.
         num_samples = args.ScanNumber
