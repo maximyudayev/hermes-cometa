@@ -28,7 +28,7 @@ pip install -e hermes-cometa
 ```
 
 ## Usage
-Using the device follows the standard [configuration file specification](https://maximyudayev.github.io/hermes/) process of HERMES nodes.
+Using the device follows the standard [configuration file specification](https://yudayev.com/hermes) process of HERMES nodes.
 
 Verify in EMG Motion Tools Windows desktop application that sensors are attached, impedance is checked, and the qulity of the signal is good. Close the application.
 
