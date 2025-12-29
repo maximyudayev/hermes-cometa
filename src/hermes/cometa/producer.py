@@ -54,7 +54,6 @@ class CometaProducer(Producer):
         **_
     ):
         self._device_mapping = device_mapping
-        self._sampling_rate_hz = sampling_rate_hz
 
         stream_out_spec = {
             "device_mapping": device_mapping,
