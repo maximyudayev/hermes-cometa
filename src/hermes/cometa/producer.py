@@ -37,12 +37,9 @@ from hermes.cometa.handler import CometaFacade
 class CometaProducer(Producer):
     """A class for streaming Cometa Pico amd Mini sEMG."""
 
-    @classmethod
-    def _log_source_tag(cls) -> str:
-        return "emgs"
-
     def __init__(
         self,
+        topic: str,
         host_ip: str,
         logging_spec: LoggingSpec,
         device_mapping: dict[str, str],
@@ -62,6 +59,7 @@ class CometaProducer(Producer):
         }
 
         super().__init__(
+            topic=topic,
             host_ip=host_ip,
             stream_out_spec=stream_out_spec,
             logging_spec=logging_spec,
@@ -93,7 +91,7 @@ class CometaProducer(Producer):
         snapshot = self._handler.get_packet()
         if snapshot is not None:
             process_time_s: float = get_time()
-            tag: str = "%s.data" % self._log_source_tag()
+            tag: str = "%s.data" % self.topic
             self._publish(tag, process_time_s=process_time_s, data=snapshot)
         elif not self._is_continue_capture:
             # If triggered to stop and no more available data, send empty 'END' packet and join.
